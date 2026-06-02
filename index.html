@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VIA VITAE</title>
+<style>
+:root {
+  --bg: #1a1a2e;
+  --bg-gradient: linear-gradient(135deg, #16213e 0%, #1a1a2e 50%, #0f3460 100%);
+  --cyan: #00d4ff;
+  --magenta: #ff6b9d;
+  --green: #00e676;
+  --orange: #ffb74d;
+  --purple: #b388ff;
+  --gold: #ffd700;
+  --text: #e0e0e0;
+  --dim: #8899aa;
+  --cw: 70px;
+  --ch: 105px;
+  --cw-small: 50px;
+  --ch-small: 75px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--bg);
+  background: var(--bg-gradient);
+  color: var(--text);
+  font-family: "Courier New", Courier, monospace;
+  min-height: 100vh;
+}
+#app {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 15px;
+}
+header { text-align: center; margin-bottom: 15px; }
+.title {
+  font-size: 1.8rem;
+  letter-spacing: 0.3em;
+  color: var(--cyan);
+  text-shadow: 0 0 8px var(--cyan);
+}
+.subtitle {
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  margin-top: 5px;
+}
+#status {
+  text-align: center;
+  padding: 6px 10px;
+  background: rgba(0,0,0,0.4);
+  border-radius: 4px;
+  margin-bottom: 15px;
+  font-size: 0.65rem;
+  color: var(--gold);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.status-text {
+  flex: 2;
+  text-align: left;
+}
+.status-info {
+  display: flex;
+  gap: 20px;
+  font-size: 0.6rem;
+  color: var(--dim);
+}
+.status-info span {
+  color: var(--gold);
+  font-weight: bold;
+}
+.ai-panel {
+  background: rgba(255,107,157,0.1);
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-left: 3px solid var(--magenta);
+}
+.ai-stats {
+  display: flex;
+  gap: 20px;
+  font-size: 0.8rem;
+}
+.ai-stats span {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: var(--magenta);
+}
+.game-area {
+  background: rgba(0,0,0,0.25);
+  border-radius: 10px;
+  padding: 12px;
+}
+.stack {
+  margin: 8px 0;
+}
+.stack-title {
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  margin-bottom: 6px;
+  padding-left: 5px;
+}
+.stack-title.ai { color: var(--magenta); }
+.stack-title.player { color: var(--cyan); }
+.stack-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: flex-start;
+  min-height: 115px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 8px;
+  padding: 8px;
+}
+.player-panel {
+  background: rgba(0,212,255,0.1);
+  padding: 10px;
+  border-radius: 6px;
+  margin-top: 15px;
+  border-left: 3px solid var(--cyan);
+}
+.player-stats {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 0.8rem;
+}
+.player-stats span {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: var(--cyan);
+}
+.hand-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: center;
+  min-height: 85px;
+}
+.hand-cards .card {
+  width: var(--cw-small);
+  height: var(--ch-small);
+}
+.hand-cards .card-value {
+  font-size: 0.75rem;
+}
+.hand-cards .card-symbol {
+  font-size: 1.3rem;
+}
+.hand-cards .card-color {
+  font-size: 0.55rem;
+}
+.btn {
+  background: transparent;
+  border: 1px solid;
+  padding: 8px 20px;
+  font-family: inherit;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  margin: 5px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+.btn-primary {
+  color: var(--cyan);
+  border-color: var(--cyan);
+}
+.btn-primary:hover:not(:disabled) {
+  background: rgba(0,212,255,0.2);
+  box-shadow: 0 0 10px rgba(0,212,255,0.3);
+}
+.btn-secondary {
+  color: var(--dim);
+  border-color: var(--dim);
+}
+.btn-secondary:hover {
+  color: white;
+  border-color: white;
+}
+.btn-rules {
+  color: var(--green);
+  border-color: var(--green);
+}
+.btn-rules:hover {
+  background: rgba(0,230,118,0.15);
+  box-shadow: 0 0 8px rgba(0,230,118,0.3);
+}
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.card {
+  width: var(--cw);
+  height: var(--ch);
+  border-radius: 6px;
+  transition: transform 0.12s;
+}
+.card-face {
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 4px 2px;
+  border: 1px solid;
+}
+.card-value {
+  font-size: 1rem;
+  font-weight: bold;
+}
+.card-symbol {
+  font-size: 1.8rem;
+}
+.card-color {
+  font-size: 0.6rem;
+  font-weight: normal;
+}
+.color-Rouge { background: linear-gradient(145deg, rgba(220,60,50,0.15), rgba(0,0,0,0.3)); border-color: #e74c3c; color: #e74c3c; }
+.color-Bleu { background: linear-gradient(145deg, rgba(52,152,219,0.15), rgba(0,0,0,0.3)); border-color: #3498db; color: #3498db; }
+.color-Vert { background: linear-gradient(145deg, rgba(46,204,113,0.15), rgba(0,0,0,0.3)); border-color: #2ecc71; color: #2ecc71; }
+.color-Jaune { background: linear-gradient(145deg, rgba(241,196,15,0.15), rgba(0,0,0,0.3)); border-color: #f1c40f; color: #f1c40f; }
+.color-Violet { background: linear-gradient(145deg, rgba(155,89,182,0.15), rgba(0,0,0,0.3)); border-color: #9b59b6; color: #9b59b6; }
+
+.card.playable {
+  cursor: pointer;
+}
+.card.playable:hover {
+  transform: translateY(-4px);
+  filter: brightness(1.1);
+}
+.card.selected {
+  transform: translateY(-4px);
+  box-shadow: 0 0 12px var(--gold);
+  border-color: var(--gold) !important;
+}
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 15px;
+  font-size: 0.45rem;
+}
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(26,26,46,0.98);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 15px;
+  overflow-y: auto;
+}
+.overlay.on {
+  display: flex;
+}
+.overlay-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  max-width: 650px;
+}
+.rules-container {
+  max-width: 600px;
+  padding: 20px;
+  background: rgba(26,26,46,0.95);
+  border: 1px solid var(--gold);
+  border-radius: 12px;
+  margin: 20px;
+}
+.rules-container h2 {
+  color: var(--gold);
+  text-align: center;
+  margin-bottom: 15px;
+  letter-spacing: 0.1em;
+}
+.rules-container h3 {
+  color: var(--cyan);
+  margin: 15px 0 8px 0;
+  font-size: 0.9rem;
+}
+.rules-container p, .rules-container li {
+  font-size: 0.7rem;
+  line-height: 1.5;
+  color: var(--text);
+}
+.rules-container ul {
+  margin-left: 20px;
+}
+.score-pop {
+  position: fixed;
+  font-size: 1.2rem;
+  font-weight: bold;
+  pointer-events: none;
+  animation: floatUp 0.8s ease-out forwards;
+  z-index: 200;
+  text-shadow: 0 0 8px currentColor;
+}
+@keyframes floatUp {
+  0% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-50px); }
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="title">VIA VITAE</div>
+    <div class="subtitle">de Dominique Ehrhard</div>
+  </header>
+
+  <div id="status">
+    <span class="status-text" id="statusMsg">Initialisation...</span>
+    <div class="status-info">
+      <span>Manche <span id="statusManche">1</span></span>
+      <span>Échange <span id="statusTour">0</span></span>
+    </div>
+  </div>
+
+  <div class="ai-panel">
+    <div><span style="color:var(--magenta)">★</span> I.A.</div>
+    <div class="ai-stats">
+      <div>📚 <span id="aiCount">0</span></div>
+      <div>⭐ <span id="aiScore">0</span></div>
+    </div>
+  </div>
+
+  <div class="game-area">
+    <div class="stack">
+      <div class="stack-title ai">▸ I.A. — Cartes jouées</div>
+      <div class="stack-cards" id="aiStack"></div>
+    </div>
+
+    <div class="stack">
+      <div class="stack-title player">▸ VOUS — Cartes jouées</div>
+      <div class="stack-cards" id="playerStack"></div>
+    </div>
+  </div>
+
+  <div class="player-panel">
+    <div class="player-stats">
+      <div><span style="color:var(--cyan)">★</span> VOUS</div>
+      <div>📚 <span id="playerCount">0</span> &nbsp;|&nbsp; ⭐ <span id="playerScore">0</span></div>
+    </div>
+    <div class="hand-cards" id="playerHand"></div>
+  </div>
+
+  <div style="text-align: center;">
+    <button class="btn btn-primary" id="playBtn">▶ JOUER</button>
+    <button class="btn btn-secondary" onclick="location.reload()">⟳ NOUVELLE PARTIE</button>
+    <button class="btn btn-rules" id="rulesBtn">📜 RÈGLES</button>
+  </div>
+
+  <div class="legend">
+    <span style="color:#e74c3c">★ ROUGE</span>
+    <span style="color:#3498db">● BLEU</span>
+    <span style="color:#2ecc71">■ VERT</span>
+    <span style="color:#f1c40f">▲ JAUNE</span>
+    <span style="color:#9b59b6">✖ VIOLET</span>
+    <span style="color:var(--dim)">→ Répondre = même symbole OU même couleur</span>
+  </div>
+</div>
+
+<div id="discardOverlay" class="overlay">
+  <h2 style="color: var(--gold);">ÉCART</h2>
+  <p>Choisissez une carte à retirer (elle ne sera pas jouée cette manche)</p>
+  <div id="discardHand" class="overlay-cards"></div>
+</div>
+
+<!-- POPUP FIN DE MANCHE -->
+<div id="mancheOverlay" class="overlay">
+  <div class="rules-container" style="text-align:center;">
+    <h2 id="mancheTitle">🏆 FIN DE MANCHE 1</h2>
+    <div id="mancheReveal" style="margin:10px 0; font-size:0.8rem;"></div>
+    <div id="mancheWinner" style="font-size:1.2rem; margin:10px 0;"></div>
+    <div id="mancheDetails" style="margin:10px 0;"></div>
+    <button class="btn btn-primary" id="mancheContinueBtn">CONTINUER</button>
+  </div>
+</div>
+
+<div id="rulesOverlay" class="overlay">
+  <div class="rules-container">
+    <h2>🎯 RÈGLES DU JEU</h2>
+    <h3>Présentation</h3>
+    <p>VIA VITAE est un jeu pour deux joueurs. Chaque partie se joue en deux manches. Le joueur qui marque le plus de points à l'issue des deux manches gagne la partie.</p>
+    <h3>Les cartes</h3>
+    <p>25 cartes : 5 symboles (★ ● ■ ▲ ✖) × 5 couleurs, valeurs de 1 à 5.</p>
+    <h3>Déroulement d'une manche</h3>
+    <p><strong>1.</strong> Un joueur reçoit 13 cartes, l'autre 12.<br>
+    <strong>2.</strong> Le joueur qui a 13 cartes en écarte une face cachée.<br>
+    <strong>3.</strong> Il pose la première carte.<br>
+    <strong>4.</strong> L'adversaire doit répondre avec le même symbole OU la même couleur.<br>
+    <strong>5.</strong> La carte la plus forte remporte l'échange et rejoue la première carte du prochain échange.<br>
+    <strong>6.</strong> Si un joueur ne peut pas répondre → il perd la manche. Son adversaire marque : <strong>valeur de sa carte × rang (numéro de l'échange)</strong>.<br>
+    <strong>7.</strong> Si les 12 échanges sont joués sans vainqueur → aucun point.<br>
+    <strong>8.</strong> Seconde manche : on échange les jeux (celui qui avait 13 cartes en manche 1 en aura 12 en manche 2, et inversement).</p>
+    <button class="btn btn-primary" onclick="document.getElementById('rulesOverlay').classList.remove('on')">FERMER</button>
+  </div>
+</div>
+
+<div id="endOverlay" class="overlay">
+  <div id="endTitle" style="font-size: 2rem; letter-spacing: 0.2em;"></div>
+  <div style="display: flex; gap: 50px; margin: 15px;">
+    <div style="text-align: center;"><div style="color:var(--cyan);">JOUEUR</div><div style="font-size: 2.5rem; font-weight:bold;" id="finalPlayer">0</div></div>
+    <div style="text-align: center;"><div style="color:var(--magenta);">I.A.</div><div style="font-size: 2.5rem; font-weight:bold;" id="finalAi">0</div></div>
+  </div>
+  <div id="endDetail" style="text-align: center; font-size: 0.65rem; margin-bottom: 15px;"></div>
+  <button class="btn btn-primary" onclick="location.reload()">REJOUER</button>
+</div>
+
+<script>
+const SYMBOLS = [
+  { char: '★', name: 'ETOILE', order: 0 },
+  { char: '●', name: 'ROND', order: 1 },
+  { char: '■', name: 'CARRE', order: 2 },
+  { char: '▲', name: 'TRIANGLE', order: 3 },
+  { char: '✖', name: 'CROIX', order: 4 }
+];
+
+const COLORS = [
+  { name: 'Rouge', code: '#e74c3c', class: 'color-Rouge', order: 0 },
+  { name: 'Bleu', code: '#3498db', class: 'color-Bleu', order: 1 },
+  { name: 'Vert', code: '#2ecc71', class: 'color-Vert', order: 2 },
+  { name: 'Jaune', code: '#f1c40f', class: 'color-Jaune', order: 3 },
+  { name: 'Violet', code: '#9b59b6', class: 'color-Violet', order: 4 }
+];
+
+const CARD_VALUES = [
+  [1, 2, 3, 4, 5],  // ★
+  [2, 3, 4, 5, 1],  // ●
+  [3, 4, 5, 1, 2],  // ■
+  [4, 5, 1, 2, 3],  // ▲
+  [5, 1, 2, 3, 4]   // ✖
+];
+
+let gameState = {
+  manche: 1,
+  tour: 0,
+  playerHand: [],
+  aiHand: [],
+  playerScore: [0, 0],
+  aiScore: [0, 0],
+  playerPlayed: [],
+  aiPlayed: [],
+  currentCard: null,
+  currentOwner: null,
+  waitingForPlayer: false,
+  selectedCard: null,
+  firstPlayer: null,
+  originalPlayerHand: [],
+  originalAiHand: [],
+  discardedCard: null,
+  gameActive: true,
+  timeoutId: null
+};
+
+function createDeck() {
+  let deck = [];
+  let id = 0;
+  for (let s = 0; s < 5; s++) {
+    for (let c = 0; c < 5; c++) {
+      let value = CARD_VALUES[s][c];
+      deck.push({
+        id: id++,
+        symIdx: s,
+        sym: SYMBOLS[s].char,
+        symName: SYMBOLS[s].name,
+        colorIdx: c,
+        colorName: COLORS[c].name,
+        colorClass: COLORS[c].class,
+        colorCode: COLORS[c].code,
+        value: value
+      });
+    }
+  }
+  for (let i = deck.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [deck[i], deck[j]] = [deck[j], deck[i]];
+  }
+  return deck;
+}
+
+function makeCard(card, faceUp = true, clickHandler = null, isSelected = false, isPlayable = false) {
+  let div = document.createElement('div');
+  div.className = 'card';
+  
+  if (!faceUp) {
+    div.innerHTML = '<div class="card-face color-Violet" style="justify-content:center; align-items:center;"><span style="font-size:1.5rem;">★</span></div>';
+    return div;
+  }
+  
+  div.innerHTML = `
+    <div class="card-face ${card.colorClass}">
+      <div class="card-value">${card.value}</div>
+      <div class="card-symbol">${card.sym}</div>
+      <div class="card-color">${card.colorName}</div>
+    </div>
+  `;
+  
+  if (isPlayable && clickHandler) {
+    div.classList.add('playable');
+    div.onclick = (e) => {
+      e.stopPropagation();
+      clickHandler(card);
+    };
+  }
+  
+  if (isSelected) {
+    div.classList.add('selected');
+  }
+  
+  return div;
+}
+
+function updateUI() {
+  document.getElementById('aiCount').innerText = gameState.aiHand.length;
+  document.getElementById('playerCount').innerText = gameState.playerHand.length;
+  document.getElementById('aiScore').innerText = gameState.aiScore[0] + gameState.aiScore[1];
+  document.getElementById('playerScore').innerText = gameState.playerScore[0] + gameState.playerScore[1];
+  document.getElementById('statusManche').innerText = gameState.manche;
+  document.getElementById('statusTour').innerText = gameState.tour;
+  
+  let aiStackDiv = document.getElementById('aiStack');
+  let playerStackDiv = document.getElementById('playerStack');
+  aiStackDiv.innerHTML = '';
+  playerStackDiv.innerHTML = '';
+  
+  for (let card of gameState.aiPlayed) {
+    aiStackDiv.appendChild(makeCard(card, true));
+  }
+  for (let card of gameState.playerPlayed) {
+    playerStackDiv.appendChild(makeCard(card, true));
+  }
+}
+
+function renderPlayerHand() {
+  let container = document.getElementById('playerHand');
+  container.innerHTML = '';
+  
+  for (let card of gameState.playerHand) {
+    let isPlayable = false;
+    if (gameState.waitingForPlayer && gameState.gameActive) {
+      if (!gameState.currentCard) {
+        isPlayable = true;
+      } else {
+        isPlayable = (card.sym === gameState.currentCard.sym || card.colorName === gameState.currentCard.colorName);
+      }
+    }
+    
+    let isSelected = (gameState.selectedCard && gameState.selectedCard.id === card.id);
+    let cardEl = makeCard(card, true, (c) => selectCard(c), isSelected, isPlayable);
+    container.appendChild(cardEl);
+  }
+}
+
+function selectCard(card) {
+  if (!gameState.waitingForPlayer || !gameState.gameActive) return;
+  if (gameState.currentCard) {
+    if (card.sym !== gameState.currentCard.sym && card.colorName !== gameState.currentCard.colorName) return;
+  }
+  
+  if (gameState.selectedCard && gameState.selectedCard.id === card.id) {
+    gameState.selectedCard = null;
+  } else {
+    gameState.selectedCard = card;
+  }
+  
+  let btn = document.getElementById('playBtn');
+  btn.disabled = (gameState.selectedCard === null);
+  renderPlayerHand();
+}
+
+function confirmPlay() {
+  if (!gameState.waitingForPlayer || !gameState.selectedCard || !gameState.gameActive) return;
+  
+  let card = gameState.selectedCard;
+  gameState.selectedCard = null;
+  gameState.waitingForPlayer = false;
+  document.getElementById('playBtn').disabled = true;
+  
+  if (gameState.timeoutId) {
+    clearTimeout(gameState.timeoutId);
+    gameState.timeoutId = null;
+  }
+  
+  playerPlayCard(card);
+}
+
+function playerPlayCard(card) {
+  let index = gameState.playerHand.findIndex(c => c.id === card.id);
+  if (index === -1) return;
+  gameState.playerHand.splice(index, 1);
+  
+  if (!gameState.currentCard) {
+    gameState.currentCard = card;
+    gameState.currentOwner = 'player';
+    gameState.playerPlayed.push(card);
+    gameState.tour++;
+    updateUI();
+    setStatus(`Échange ${gameState.tour} : VOUS jouez ${card.sym} ${card.colorName} (valeur ${card.value}) — I.A. doit répondre`);
+    renderPlayerHand();
+    
+    if (gameState.playerHand.length === 0 && gameState.aiHand.length === 0) {
+      endMancheNoWinner();
+    } else {
+      setTimeout(() => aiPlay(), 600);
+    }
+  } else {
+    gameState.playerPlayed.push(card);
+    updateUI();
+    resolvePli('player', card);
+  }
+}
+
+function aiPlay() {
+  if (!gameState.gameActive) return;
+  
+  setTimeout(() => {
+    if (!gameState.gameActive) return;
+    
+    let playableCards = gameState.aiHand.filter(c => {
+      if (!gameState.currentCard) return true;
+      return (c.sym === gameState.currentCard.sym || c.colorName === gameState.currentCard.colorName);
+    });
+    
+    if (playableCards.length === 0 && gameState.currentCard !== null) {
+      let points = gameState.currentCard.value * gameState.tour;
+      gameState.playerScore[gameState.manche - 1] += points;
+      updateUI();
+      showPopup(points, 'player');
+      setStatus(`I.A. ne peut pas répondre — VOUS gagnez la manche ! (${gameState.currentCard.value} × ${gameState.tour} = ${points} pts)`);
+      gameState.gameActive = false;
+      setTimeout(() => showMancheResult('player', points, gameState.currentCard), 2000);
+      return;
+    }
+    
+    let chosenCard;
+    if (!gameState.currentCard) {
+      let sorted = [...gameState.aiHand].sort((a,b) => b.value - a.value);
+      chosenCard = sorted[0];
+    } else {
+      let canWin = playableCards.filter(c => c.value > gameState.currentCard.value);
+      if (canWin.length > 0) {
+        canWin.sort((a,b) => a.value - b.value);
+        chosenCard = canWin[0];
+      } else {
+        playableCards.sort((a,b) => a.value - b.value);
+        chosenCard = playableCards[0];
+      }
+    }
+    
+    let index = gameState.aiHand.findIndex(c => c.id === chosenCard.id);
+    if (index !== -1) gameState.aiHand.splice(index, 1);
+    
+    if (!gameState.currentCard) {
+      gameState.currentCard = chosenCard;
+      gameState.currentOwner = 'ai';
+      gameState.aiPlayed.push(chosenCard);
+      gameState.tour++;
+      updateUI();
+      setStatus(`Échange ${gameState.tour} : I.A. joue ${chosenCard.sym} ${chosenCard.colorName} (valeur ${chosenCard.value}) — À vous de répondre`);
+      gameState.waitingForPlayer = true;
+      renderPlayerHand();
+      checkPlayerCanRespond();
+    } else {
+      gameState.aiPlayed.push(chosenCard);
+      updateUI();
+      resolvePli('ai', chosenCard);
+    }
+  }, 500);
+}
+
+function checkPlayerCanRespond() {
+  if (!gameState.waitingForPlayer || !gameState.currentCard) return;
+  
+  let canPlayAny = gameState.playerHand.some(card => 
+    card.sym === gameState.currentCard.sym || card.colorName === gameState.currentCard.colorName
+  );
+  
+  if (!canPlayAny && gameState.playerHand.length > 0) {
+    let points = gameState.currentCard.value * gameState.tour;
+    gameState.aiScore[gameState.manche - 1] += points;
+    updateUI();
+    showPopup(points, 'ai');
+    setStatus(`VOUS ne pouvez pas répondre — I.A. gagne la manche ! (${gameState.currentCard.value} × ${gameState.tour} = ${points} pts)`);
+    gameState.gameActive = false;
+    gameState.waitingForPlayer = false;
+    setTimeout(() => showMancheResult('ai', points, gameState.currentCard), 2000);
+  }
+}
+
+function resolvePli(secondPlayer, secondCard) {
+  let firstCard = gameState.currentCard;
+  let firstPlayer = gameState.currentOwner;
+  
+  let winner;
+  if (firstCard.value > secondCard.value) winner = firstPlayer;
+  else if (secondCard.value > firstCard.value) winner = secondPlayer;
+  else winner = firstPlayer;
+  
+  setStatus(`Échange ${gameState.tour} : ${firstCard.value} vs ${secondCard.value} → ${winner === 'player' ? 'VOUS' : 'I.A.'} remporte l'échange et entame le suivant`);
+  
+  gameState.currentCard = null;
+  gameState.currentOwner = null;
+  updateUI();
+  
+  setTimeout(() => {
+    if (gameState.playerHand.length === 0 && gameState.aiHand.length === 0) {
+      endMancheNoWinner();
+    } else if (gameState.gameActive) {
+      gameState.tour++;
+      updateUI();
+      if (winner === 'player') {
+        setStatus("VOUS commencez le prochain échange");
+        gameState.waitingForPlayer = true;
+        renderPlayerHand();
+        if (gameState.playerHand.length === 0) {
+          endMancheNoWinner();
+        }
+      } else {
+        setStatus("I.A. commence le prochain échange");
+        aiPlay();
+      }
+    }
+  }, 1800);
+}
+
+function endMancheNoWinner() {
+  setStatus(`Fin de manche — 12 échanges sans vainqueur. Aucun point.`);
+  gameState.gameActive = false;
+  setTimeout(() => showMancheResult(null, 0, null), 2000);
+}
+
+function showMancheResult(winner, points, lastCard) {
+  let overlay = document.getElementById('mancheOverlay');
+  let title = document.getElementById('mancheTitle');
+  let revealDiv = document.getElementById('mancheReveal');
+  let winnerDiv = document.getElementById('mancheWinner');
+  let detailsDiv = document.getElementById('mancheDetails');
+  
+  title.innerText = `🏆 FIN DE MANCHE ${gameState.manche}`;
+  
+  // Révéler la carte écartée
+  if (gameState.discardedCard) {
+    let cardImg = makeCard(gameState.discardedCard, true);
+    cardImg.style.width = '50px';
+    cardImg.style.height = '75px';
+    cardImg.style.display = 'inline-block';
+    cardImg.style.margin = '5px';
+    revealDiv.innerHTML = `Carte écartée : `;
+    revealDiv.appendChild(cardImg);
+  } else {
+    revealDiv.innerHTML = `(Aucune carte écartée)`;
+  }
+  
+  if (winner === null) {
+    winnerDiv.innerHTML = `🤝 AUCUN VAINQUEUR - 12 échanges sans vainqueur`;
+    detailsDiv.innerHTML = `Aucun point marqué pour cette manche.`;
+  } else {
+    let winnerName = winner === 'player' ? 'VOUS' : 'I.A.';
+    let winnerColor = winner === 'player' ? 'var(--cyan)' : 'var(--magenta)';
+    let cardInfo = lastCard ? `${lastCard.sym} ${lastCard.colorName} (valeur ${lastCard.value})` : '';
+    winnerDiv.innerHTML = `<strong style="color:${winnerColor}">${winnerName}</strong> remporte la manche !`;
+    detailsDiv.innerHTML = `🔢 Calcul : ${lastCard ? lastCard.value : '?'} (valeur) × ${gameState.tour} (rang) = ${points} pts<br>🏅 Score manche ${gameState.manche} → ${winnerName} : ${points} pts`;
+  }
+  
+  overlay.classList.add('on');
+}
+
+function closeManchePopup() {
+  document.getElementById('mancheOverlay').classList.remove('on');
+  if (gameState.manche === 1) {
+    startManche2();
+  } else {
+    endGame();
+  }
+}
+
+function endManche() {
+  // Remplacé par showMancheResult -> ne fait rien ici
+}
+
+function startManche2() {
+  gameState.manche = 2;
+  gameState.tour = 0;
+  gameState.playerPlayed = [];
+  gameState.aiPlayed = [];
+  gameState.currentCard = null;
+  gameState.currentOwner = null;
+  gameState.waitingForPlayer = false;
+  gameState.selectedCard = null;
+  gameState.gameActive = true;
+  
+  // Échange des jeux
+  if (gameState.firstPlayer === 'player') {
+    gameState.playerHand = [...gameState.originalAiHand];
+    gameState.aiHand = [...gameState.originalPlayerHand];
+  } else {
+    gameState.playerHand = [...gameState.originalAiHand];
+    gameState.aiHand = [...gameState.originalPlayerHand];
+  }
+  
+  let playerHas13 = (gameState.firstPlayer === 'ai');
+  if (playerHas13) {
+    let minIdx = 0;
+    for (let i = 1; i < gameState.playerHand.length; i++) {
+      if (gameState.playerHand[i].value < gameState.playerHand[minIdx].value) minIdx = i;
+    }
+    gameState.playerHand.splice(minIdx, 1);
+    setStatus("Manche 2 — VOUS avez 13 cartes, vous allez écarter une carte");
+    showDiscardForManche2();
+  } else {
+    let minIdx = 0;
+    for (let i = 1; i < gameState.aiHand.length; i++) {
+      if (gameState.aiHand[i].value < gameState.aiHand[minIdx].value) minIdx = i;
+    }
+    gameState.aiHand.splice(minIdx, 1);
+    updateUI();
+    setStatus("Manche 2 — I.A. commence");
+    aiPlay();
+  }
+}
+
+function showDiscardForManche2() {
+  let overlay = document.getElementById('discardOverlay');
+  let container = document.getElementById('discardHand');
+  container.innerHTML = '';
+  
+  for (let card of gameState.playerHand) {
+    let cardEl = makeCard(card, true, null, false, false);
+    cardEl.style.cursor = 'pointer';
+    cardEl.onclick = (function(c) {
+      return function() {
+        gameState.discardedCard = c;
+        gameState.playerHand = gameState.playerHand.filter(x => x.id !== c.id);
+        overlay.classList.remove('on');
+        updateUI();
+        setStatus("Manche 2 — VOUS commencez");
+        gameState.waitingForPlayer = true;
+        renderPlayerHand();
+      };
+    })(card);
+    container.appendChild(cardEl);
+  }
+  
+  overlay.classList.add('on');
+  setStatus('Manche 2 — Choisissez une carte à écarter');
+}
+
+function endGame() {
+  let totalPlayer = gameState.playerScore[0] + gameState.playerScore[1];
+  let totalAi = gameState.aiScore[0] + gameState.aiScore[1];
+  
+  document.getElementById('finalPlayer').innerText = totalPlayer;
+  document.getElementById('finalAi').innerText = totalAi;
+  document.getElementById('endDetail').innerHTML = `Manche 1: VOUS ${gameState.playerScore[0]} - ${gameState.aiScore[0]} I.A.<br>Manche 2: VOUS ${gameState.playerScore[1]} - ${gameState.aiScore[1]} I.A.`;
+  
+  let title = document.getElementById('endTitle');
+  if (totalPlayer > totalAi) {
+    title.innerText = 'VICTOIRE';
+    title.style.color = 'var(--cyan)';
+  } else if (totalAi > totalPlayer) {
+    title.innerText = 'DÉFAITE';
+    title.style.color = 'var(--magenta)';
+  } else {
+    title.innerText = 'ÉGALITÉ';
+    title.style.color = 'var(--gold)';
+  }
+  
+  document.getElementById('endOverlay').classList.add('on');
+}
+
+function showDiscard() {
+  let overlay = document.getElementById('discardOverlay');
+  let container = document.getElementById('discardHand');
+  container.innerHTML = '';
+  
+  for (let card of gameState.playerHand) {
+    let cardEl = makeCard(card, true, null, false, false);
+    cardEl.style.cursor = 'pointer';
+    cardEl.onclick = (function(c) {
+      return function() {
+        gameState.discardedCard = c;
+        gameState.playerHand = gameState.playerHand.filter(x => x.id !== c.id);
+        overlay.classList.remove('on');
+        updateUI();
+        setStatus("Manche 1 — VOUS commencez");
+        gameState.waitingForPlayer = true;
+        renderPlayerHand();
+      };
+    })(card);
+    container.appendChild(cardEl);
+  }
+  
+  overlay.classList.add('on');
+  setStatus('Manche 1 — Choisissez une carte à écarter');
+}
+
+function setStatus(msg) {
+  let el = document.getElementById('statusMsg');
+  if (el) el.innerText = '// ' + msg + ' //';
+}
+
+function showPopup(points, who) {
+  let div = document.createElement('div');
+  div.className = 'score-pop';
+  div.innerText = '+' + points;
+  div.style.color = who === 'player' ? 'var(--cyan)' : 'var(--magenta)';
+  div.style.left = who === 'player' ? '25%' : '70%';
+  div.style.top = '40%';
+  document.body.appendChild(div);
+  setTimeout(() => div.remove(), 900);
+}
+
+function initGame() {
+  let deck = createDeck();
+  let firstIsPlayer = Math.random() < 0.5;
+  
+  if (firstIsPlayer) {
+    gameState.playerHand = deck.slice(0, 13);
+    gameState.aiHand = deck.slice(13, 25);
+  } else {
+    gameState.playerHand = deck.slice(0, 12);
+    gameState.aiHand = deck.slice(12, 25);
+  }
+  
+  gameState.originalPlayerHand = [...gameState.playerHand];
+  gameState.originalAiHand = [...gameState.aiHand];
+  gameState.firstPlayer = firstIsPlayer ? 'player' : 'ai';
+  gameState.manche = 1;
+  gameState.tour = 0;
+  gameState.playerScore = [0, 0];
+  gameState.aiScore = [0, 0];
+  gameState.playerPlayed = [];
+  gameState.aiPlayed = [];
+  gameState.currentCard = null;
+  gameState.currentOwner = null;
+  gameState.waitingForPlayer = false;
+  gameState.selectedCard = null;
+  gameState.gameActive = true;
+  gameState.discardedCard = null;
+  gameState.timeoutId = null;
+  
+  updateUI();
+  renderPlayerHand();
+  
+  if (firstIsPlayer) {
+    showDiscard();
+  } else {
+    let minIdx = 0;
+    for (let i = 1; i < gameState.aiHand.length; i++) {
+      if (gameState.aiHand[i].value < gameState.aiHand[minIdx].value) minIdx = i;
+    }
+    gameState.discardedCard = gameState.aiHand[minIdx];
+    gameState.aiHand.splice(minIdx, 1);
+    updateUI();
+    setStatus("Manche 1 — I.A. commence");
+    aiPlay();
+  }
+}
+
+document.getElementById('playBtn').onclick = confirmPlay;
+document.getElementById('rulesBtn').onclick = () => document.getElementById('rulesOverlay').classList.add('on');
+document.getElementById('mancheContinueBtn').onclick = () => closeManchePopup();
+initGame();
+</script>
+</body>
+</html>
