@@ -34,14 +34,119 @@ body {
   margin: 0 auto;
   padding: 15px;
 }
+
+/* ===== PAGE D'ACCUEIL ===== */
+#home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 90vh;
+  text-align: center;
+  padding: 20px;
+}
+#home .title {
+  font-size: 4rem;
+  letter-spacing: 0.3em;
+  color: var(--cyan);
+  text-shadow: 0 0 30px var(--cyan), 0 0 60px rgba(0,212,255,0.3);
+  margin-bottom: 10px;
+}
+#home .subtitle {
+  font-size: 1.2rem;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+#home .credit {
+  font-size: 0.8rem;
+  color: var(--dim);
+  margin-bottom: 30px;
+  letter-spacing: 0.1em;
+}
+#home .slogan {
+  font-size: 0.9rem;
+  color: var(--green);
+  letter-spacing: 0.15em;
+  margin-bottom: 25px;
+  text-shadow: 0 0 15px rgba(0,230,118,0.2);
+}
+#home .btn-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 220px;
+}
+#home .btn-home {
+  background: transparent;
+  border: 1px solid;
+  padding: 14px 20px;
+  font-family: inherit;
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.3s;
+  width: 100%;
+  text-align: center;
+}
+#home .btn-home.btn-rules-home {
+  color: var(--green);
+  border-color: var(--green);
+}
+#home .btn-home.btn-rules-home:hover {
+  background: rgba(0,230,118,0.15);
+  box-shadow: 0 0 20px rgba(0,230,118,0.2);
+  transform: scale(1.05);
+}
+#home .btn-home.btn-start {
+  color: var(--cyan);
+  border-color: var(--cyan);
+}
+#home .btn-home.btn-start:hover {
+  background: rgba(0,212,255,0.15);
+  box-shadow: 0 0 30px rgba(0,212,255,0.3);
+  transform: scale(1.05);
+}
+#home .btn-home.btn-about {
+  color: var(--gold);
+  border-color: var(--gold);
+}
+#home .btn-home.btn-about:hover {
+  background: rgba(255,215,0,0.15);
+  box-shadow: 0 0 20px rgba(255,215,0,0.2);
+  transform: scale(1.05);
+}
+#home .decor {
+  margin-top: 40px;
+  font-size: 2.2rem;
+  letter-spacing: 1.2rem;
+  opacity: 0.5;
+  color: var(--text);
+}
+#home .decor span {
+  display: inline-block;
+  width: 2.2rem;
+  text-align: center;
+}
+#home .decor .d-rouge { color: #e74c3c; }
+#home .decor .d-bleu { color: #3498db; }
+#home .decor .d-vert { color: #2ecc71; }
+#home .decor .d-jaune { color: #f1c40f; }
+#home .decor .d-violet { color: #9b59b6; }
+
+/* ===== JEU ===== */
+#game {
+  display: none;
+}
 header { text-align: center; margin-bottom: 15px; }
-.title {
+.title-game {
   font-size: 1.8rem;
   letter-spacing: 0.3em;
   color: var(--cyan);
   text-shadow: 0 0 8px var(--cyan);
 }
-.subtitle {
+.subtitle-game {
   font-size: 0.55rem;
   letter-spacing: 0.1em;
   color: var(--gold);
@@ -195,6 +300,14 @@ header { text-align: center; margin-bottom: 15px; }
   background: rgba(0,230,118,0.15);
   box-shadow: 0 0 8px rgba(0,230,118,0.3);
 }
+.btn-discard {
+  color: var(--gold);
+  border-color: var(--gold);
+}
+.btn-discard:hover:not(:disabled) {
+  background: rgba(255,215,0,0.15);
+  box-shadow: 0 0 8px rgba(255,215,0,0.2);
+}
 button:disabled {
   opacity: 0.4;
   cursor: not-allowed;
@@ -251,8 +364,22 @@ button:disabled {
   flex-wrap: wrap;
   gap: 12px;
   justify-content: center;
-  margin-top: 15px;
+  margin-top: 12px;
   font-size: 0.45rem;
+  align-items: center;
+}
+.legend-credit {
+  color: var(--dim);
+  font-size: 0.4rem;
+  letter-spacing: 0.1em;
+  margin-top: 4px;
+}
+.bottom-bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 8px;
 }
 .overlay {
   display: none;
@@ -281,7 +408,7 @@ button:disabled {
 }
 .rules-container {
   max-width: 600px;
-  padding: 20px;
+  padding: 30px;
   background: rgba(26,26,46,0.95);
   border: 1px solid var(--gold);
   border-radius: 12px;
@@ -319,64 +446,177 @@ button:disabled {
   0% { opacity: 1; transform: translateY(0); }
   100% { opacity: 0; transform: translateY(-50px); }
 }
+
+/* ===== FENÊTRE FIN DE MANCHE ===== */
+.manche-result {
+  text-align: center;
+  padding: 10px 0;
+}
+.manche-result .manche-title {
+  font-size: 1.8rem;
+  color: var(--gold);
+  letter-spacing: 0.2em;
+  margin-bottom: 15px;
+}
+.manche-result .manche-winner {
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+}
+.manche-result .manche-score {
+  font-size: 3rem;
+  font-weight: bold;
+  margin: 12px 0;
+}
+.manche-result .manche-calculation {
+  font-size: 0.8rem;
+  color: var(--dim);
+  margin-bottom: 10px;
+}
+.manche-result .manche-reveal {
+  font-size: 0.8rem;
+  margin: 15px 0;
+  color: var(--text);
+}
+.manche-result .manche-reveal .card {
+  display: inline-block;
+  margin: 5px auto;
+}
+
+/* ===== FENÊTRE CARTE ÉCARTÉE ===== */
+.discard-popup .card {
+  width: 100px;
+  height: 150px;
+  margin: 10px auto;
+}
+.discard-popup .card .card-value {
+  font-size: 1.4rem;
+}
+.discard-popup .card .card-symbol {
+  font-size: 2.5rem;
+}
+.discard-popup .card .card-color {
+  font-size: 0.8rem;
+}
+
+/* ===== FENÊTRE À PROPOS ===== */
+.about-container {
+  max-width: 600px;
+  padding: 30px;
+  background: rgba(26,26,46,0.95);
+  border: 1px solid var(--gold);
+  border-radius: 12px;
+  margin: 20px;
+  text-align: left;
+}
+.about-container h2 {
+  color: var(--gold);
+  text-align: center;
+  margin-bottom: 15px;
+  letter-spacing: 0.1em;
+}
+.about-container h3 {
+  color: var(--cyan);
+  margin: 15px 0 8px 0;
+  font-size: 0.9rem;
+}
+.about-container p {
+  font-size: 0.7rem;
+  line-height: 1.7;
+  color: var(--text);
+  margin-bottom: 10px;
+  text-align: justify;
+}
+.about-container .about-credit {
+  text-align: center;
+  font-size: 0.6rem;
+  color: var(--dim);
+  margin-top: 15px;
+}
 </style>
 </head>
 <body>
 <div id="app">
-  <header>
+
+  <!-- ===== PAGE D'ACCUEIL ===== -->
+  <div id="home">
     <div class="title">VIA VITAE</div>
     <div class="subtitle">de Dominique Ehrhard</div>
-  </header>
-
-  <div id="status">
-    <span class="status-text" id="statusMsg">Initialisation...</span>
-    <div class="status-info">
-      <span>Manche <span id="statusManche">1</span></span>
-      <span>Échange <span id="statusTour">0</span></span>
+    <div class="credit">Création Murphy Ramusovic</div>
+    <div class="slogan">✦ 3 minutes, 2 joueurs, 1 gagnant ✦</div>
+    <div class="btn-group">
+      <button class="btn-home btn-rules-home" id="rulesHomeBtn">Règles du jeu</button>
+      <button class="btn-home btn-start" id="startGameBtn">Nouvelle partie</button>
+      <button class="btn-home btn-about" id="aboutHomeBtn">À propos</button>
+    </div>
+    <div class="decor">
+      <span class="d-rouge">★</span>
+      <span class="d-bleu">●</span>
+      <span class="d-vert">■</span>
+      <span class="d-jaune">▲</span>
+      <span class="d-violet">✖</span>
     </div>
   </div>
 
-  <div class="ai-panel">
-    <div><span style="color:var(--magenta)">★</span> I.A.</div>
-    <div class="ai-stats">
-      <div>📚 <span id="aiCount">0</span></div>
-      <div>⭐ <span id="aiScore">0</span></div>
+  <!-- ===== JEU ===== -->
+  <div id="game">
+    <header>
+      <div class="title-game">VIA VITAE</div>
+      <div class="subtitle-game">de Dominique Ehrhard</div>
+    </header>
+
+    <div id="status">
+      <span class="status-text" id="statusMsg">Initialisation...</span>
+      <div class="status-info">
+        <span>Manche <span id="statusManche">1</span></span>
+        <span>Cartes jouées <span id="statusTour">0</span></span>
+        <span>Tour de jeu <span id="statusTurn">0</span></span>
+      </div>
     </div>
-  </div>
 
-  <div class="game-area">
-    <div class="stack">
-      <div class="stack-title ai">▸ I.A. — Cartes jouées</div>
-      <div class="stack-cards" id="aiStack"></div>
+    <div class="ai-panel">
+      <div>I.A.</div>
+      <div class="ai-stats">
+        <div>Cartes en main : <span id="aiCount">0</span></div>
+        <div>Points de victoire : <span id="aiScore">0</span></div>
+      </div>
     </div>
 
-    <div class="stack">
-      <div class="stack-title player">▸ VOUS — Cartes jouées</div>
-      <div class="stack-cards" id="playerStack"></div>
+    <div class="game-area">
+      <div class="stack">
+        <div class="stack-title ai">▸ I.A. — Cartes jouées</div>
+        <div class="stack-cards" id="aiStack"></div>
+      </div>
+
+      <div class="stack">
+        <div class="stack-title player">▸ VOUS — Cartes jouées</div>
+        <div class="stack-cards" id="playerStack"></div>
+      </div>
     </div>
-  </div>
 
-  <div class="player-panel">
-    <div class="player-stats">
-      <div><span style="color:var(--cyan)">★</span> VOUS</div>
-      <div>📚 <span id="playerCount">0</span> &nbsp;|&nbsp; ⭐ <span id="playerScore">0</span></div>
+    <div class="player-panel">
+      <div class="player-stats">
+        <div>VOUS</div>
+        <div>Cartes en main : <span id="playerCount">0</span> &nbsp;|&nbsp; Points de victoire : <span id="playerScore">0</span></div>
+      </div>
+      <div class="hand-cards" id="playerHand"></div>
     </div>
-    <div class="hand-cards" id="playerHand"></div>
-  </div>
 
-  <div style="text-align: center;">
-    <button class="btn btn-primary" id="playBtn">▶ JOUER</button>
-    <button class="btn btn-secondary" onclick="location.reload()">⟳ NOUVELLE PARTIE</button>
-    <button class="btn btn-rules" id="rulesBtn">📜 RÈGLES</button>
-  </div>
+    <div class="bottom-bar">
+      <button class="btn btn-primary" id="playBtn">JOUER</button>
+      <button class="btn btn-discard" id="discardBtn" disabled>Carte écartée</button>
+      <button class="btn btn-secondary" id="newGameBtn">FIN DE PARTIE</button>
+      <button class="btn btn-rules" id="rulesBtn">RÈGLES</button>
+    </div>
 
-  <div class="legend">
-    <span style="color:#e74c3c">★ ROUGE</span>
-    <span style="color:#3498db">● BLEU</span>
-    <span style="color:#2ecc71">■ VERT</span>
-    <span style="color:#f1c40f">▲ JAUNE</span>
-    <span style="color:#9b59b6">✖ VIOLET</span>
-    <span style="color:var(--dim)">→ Répondre = même symbole OU même couleur</span>
+    <div class="legend">
+      <span style="color:#e74c3c">★ ROUGE</span>
+      <span style="color:#3498db">● BLEU</span>
+      <span style="color:#2ecc71">■ VERT</span>
+      <span style="color:#f1c40f">▲ JAUNE</span>
+      <span style="color:#9b59b6">✖ VIOLET</span>
+      <span style="color:var(--dim)">- Répondre = même symbole OU même couleur</span>
+    </div>
+    <div class="legend-credit" style="text-align:center;">- Murphy Ramusovic</div>
   </div>
 </div>
 
@@ -387,19 +627,31 @@ button:disabled {
 </div>
 
 <!-- POPUP FIN DE MANCHE -->
-<div id="mancheOverlay" class="overlay">
+<div id="mancheOverlay" class="overlay"
+  <div class="rules-container">
+    <div class="manche-result">
+      <div class="manche-title" id="mancheTitle">FIN DE MANCHE 1</div>
+      <div class="manche-winner" id="mancheWinner"></div>
+      <div class="manche-score" id="mancheScore"></div>
+      <div class="manche-calculation" id="mancheDetails"></div>
+      <div class="manche-reveal" id="mancheReveal"></div>
+      <button class="btn btn-primary" id="mancheContinueBtn" style="margin-top:15px;">CONTINUER</button>
+    </div>
+  </div>
+</div>
+
+<!-- POPUP CARTE ÉCARTÉE -->
+<div id="discardCardOverlay" class="overlay discard-popup">
   <div class="rules-container" style="text-align:center;">
-    <h2 id="mancheTitle">🏆 FIN DE MANCHE 1</h2>
-    <div id="mancheReveal" style="margin:10px 0; font-size:0.8rem;"></div>
-    <div id="mancheWinner" style="font-size:1.2rem; margin:10px 0;"></div>
-    <div id="mancheDetails" style="margin:10px 0;"></div>
-    <button class="btn btn-primary" id="mancheContinueBtn">CONTINUER</button>
+    <h2 style="color:var(--gold);">Carte écartée</h2>
+    <div id="discardCardDisplay" style="margin:15px 0;"></div>
+    <button class="btn btn-primary" onclick="document.getElementById('discardCardOverlay').classList.remove('on')">FERMER</button>
   </div>
 </div>
 
 <div id="rulesOverlay" class="overlay">
   <div class="rules-container">
-    <h2>🎯 RÈGLES DU JEU</h2>
+    <h2>RÈGLES DU JEU</h2>
     <h3>Présentation</h3>
     <p>VIA VITAE est un jeu pour deux joueurs. Chaque partie se joue en deux manches. Le joueur qui marque le plus de points à l'issue des deux manches gagne la partie.</p>
     <h3>Les cartes</h3>
@@ -417,6 +669,19 @@ button:disabled {
   </div>
 </div>
 
+<div id="aboutOverlay" class="overlay">
+  <div class="about-container">
+    <h2>À PROPOS</h2>
+    <h3>Historique</h3>
+    <p>Via Victae est à l'orignine un jeu de 25 cartes au format Tarot. Les cartes  s'harmonisent entre elles pour créer une infinité d'images. Chaque carte est une œuvre d'art spécialement interprétée par Dominique Ehrhard, peintre d'art et concepteur de jeux.</p>
+    <p>VIA VITAE est publié en 2004 par les édition Face & Dos et la ville d'Issy-les-Moulineaux.</p>
+    <p>C'est un jeu spécialement créé pour une exposition sur Dominique Ehrhard et ses œuvres d'art intitulée "L'exposition où vous jouez, peintures et jeux de Dominique Ehrhard", du 8 décembre 2004 au 13 février 2005 au Musée français des cartes à jouer (ville d'Issy-les-Moulineaux).</p>
+    <p>Les illustrations sont dans le style "Renaissance Italienne", de véritables représentations picturales de l'arbre de vie ou chemin du destin.</p>
+    <div class="about-credit">Nouveau design et code par Murphy Ramusovic 2026</div>
+    <button class="btn btn-primary" onclick="document.getElementById('aboutOverlay').classList.remove('on')" style="margin-top:15px;display:block;margin-left:auto;margin-right:auto;">FERMER</button>
+  </div>
+</div>
+
 <div id="endOverlay" class="overlay">
   <div id="endTitle" style="font-size: 2rem; letter-spacing: 0.2em;"></div>
   <div style="display: flex; gap: 50px; margin: 15px;">
@@ -424,7 +689,7 @@ button:disabled {
     <div style="text-align: center;"><div style="color:var(--magenta);">I.A.</div><div style="font-size: 2.5rem; font-weight:bold;" id="finalAi">0</div></div>
   </div>
   <div id="endDetail" style="text-align: center; font-size: 0.65rem; margin-bottom: 15px;"></div>
-  <button class="btn btn-primary" onclick="location.reload()">REJOUER</button>
+  <button class="btn btn-primary" id="replayBtn">ACCUEIL</button>
 </div>
 
 <script>
@@ -469,9 +734,19 @@ let gameState = {
   originalPlayerHand: [],
   originalAiHand: [],
   discardedCard: null,
+  discardedBy: null,
   gameActive: true,
-  timeoutId: null
+  timeoutId: null,
+  isEnding: false,
+  currentPoints: 0,
+  turnNumber: 0
 };
+
+// Fonction pour calculer le numéro de colonne en cours
+function getCurrentTurn() {
+  if (gameState.tour === 0) return 1;
+  return Math.floor((gameState.tour - 1) / 2) + 1;
+}
 
 function createDeck() {
   let deck = [];
@@ -538,6 +813,7 @@ function updateUI() {
   document.getElementById('playerScore').innerText = gameState.playerScore[0] + gameState.playerScore[1];
   document.getElementById('statusManche').innerText = gameState.manche;
   document.getElementById('statusTour').innerText = gameState.tour;
+  document.getElementById('statusTurn').innerText = getCurrentTurn();
   
   let aiStackDiv = document.getElementById('aiStack');
   let playerStackDiv = document.getElementById('playerStack');
@@ -550,6 +826,13 @@ function updateUI() {
   for (let card of gameState.playerPlayed) {
     playerStackDiv.appendChild(makeCard(card, true));
   }
+  
+  let discardBtn = document.getElementById('discardBtn');
+  if (gameState.discardedBy === 'player' && gameState.discardedCard) {
+    discardBtn.disabled = false;
+  } else {
+    discardBtn.disabled = true;
+  }
 }
 
 function renderPlayerHand() {
@@ -558,7 +841,7 @@ function renderPlayerHand() {
   
   for (let card of gameState.playerHand) {
     let isPlayable = false;
-    if (gameState.waitingForPlayer && gameState.gameActive) {
+    if (gameState.waitingForPlayer && gameState.gameActive && !gameState.isEnding) {
       if (!gameState.currentCard) {
         isPlayable = true;
       } else {
@@ -573,7 +856,7 @@ function renderPlayerHand() {
 }
 
 function selectCard(card) {
-  if (!gameState.waitingForPlayer || !gameState.gameActive) return;
+  if (!gameState.waitingForPlayer || !gameState.gameActive || gameState.isEnding) return;
   if (gameState.currentCard) {
     if (card.sym !== gameState.currentCard.sym && card.colorName !== gameState.currentCard.colorName) return;
   }
@@ -590,7 +873,7 @@ function selectCard(card) {
 }
 
 function confirmPlay() {
-  if (!gameState.waitingForPlayer || !gameState.selectedCard || !gameState.gameActive) return;
+  if (!gameState.waitingForPlayer || !gameState.selectedCard || !gameState.gameActive || gameState.isEnding) return;
   
   let card = gameState.selectedCard;
   gameState.selectedCard = null;
@@ -615,15 +898,13 @@ function playerPlayCard(card) {
     gameState.currentOwner = 'player';
     gameState.playerPlayed.push(card);
     gameState.tour++;
+    gameState.currentPoints = 0;
     updateUI();
-    setStatus(`Échange ${gameState.tour} : VOUS jouez ${card.sym} ${card.colorName} (valeur ${card.value}) — I.A. doit répondre`);
+    setStatus(`Échange ${getCurrentTurn()} : VOUS jouez ${card.sym} ${card.colorName} (valeur ${card.value}) — I.A. doit répondre`);
     renderPlayerHand();
     
-    if (gameState.playerHand.length === 0 && gameState.aiHand.length === 0) {
-      endMancheNoWinner();
-    } else {
-      setTimeout(() => aiPlay(), 600);
-    }
+    if (checkMancheEnd()) return;
+    setTimeout(() => aiPlay(), 600);
   } else {
     gameState.playerPlayed.push(card);
     updateUI();
@@ -632,10 +913,15 @@ function playerPlayCard(card) {
 }
 
 function aiPlay() {
-  if (!gameState.gameActive) return;
+  if (!gameState.gameActive || gameState.isEnding) return;
+  
+  if (gameState.aiHand.length === 0) {
+    endMancheNoWinner();
+    return;
+  }
   
   setTimeout(() => {
-    if (!gameState.gameActive) return;
+    if (!gameState.gameActive || gameState.isEnding) return;
     
     let playableCards = gameState.aiHand.filter(c => {
       if (!gameState.currentCard) return true;
@@ -645,10 +931,12 @@ function aiPlay() {
     if (playableCards.length === 0 && gameState.currentCard !== null) {
       let points = gameState.currentCard.value * gameState.tour;
       gameState.playerScore[gameState.manche - 1] += points;
+      gameState.currentPoints = points;
       updateUI();
       showPopup(points, 'player');
       setStatus(`I.A. ne peut pas répondre — VOUS gagnez la manche ! (${gameState.currentCard.value} × ${gameState.tour} = ${points} pts)`);
       gameState.gameActive = false;
+      gameState.isEnding = true;
       setTimeout(() => showMancheResult('player', points, gameState.currentCard), 2000);
       return;
     }
@@ -676,8 +964,9 @@ function aiPlay() {
       gameState.currentOwner = 'ai';
       gameState.aiPlayed.push(chosenCard);
       gameState.tour++;
+      gameState.currentPoints = 0;
       updateUI();
-      setStatus(`Échange ${gameState.tour} : I.A. joue ${chosenCard.sym} ${chosenCard.colorName} (valeur ${chosenCard.value}) — À vous de répondre`);
+      setStatus(`Échange ${getCurrentTurn()} : I.A. joue ${chosenCard.sym} ${chosenCard.colorName} (valeur ${chosenCard.value}) — À vous de répondre`);
       gameState.waitingForPlayer = true;
       renderPlayerHand();
       checkPlayerCanRespond();
@@ -690,7 +979,7 @@ function aiPlay() {
 }
 
 function checkPlayerCanRespond() {
-  if (!gameState.waitingForPlayer || !gameState.currentCard) return;
+  if (!gameState.waitingForPlayer || !gameState.currentCard || gameState.isEnding) return;
   
   let canPlayAny = gameState.playerHand.some(card => 
     card.sym === gameState.currentCard.sym || card.colorName === gameState.currentCard.colorName
@@ -699,12 +988,16 @@ function checkPlayerCanRespond() {
   if (!canPlayAny && gameState.playerHand.length > 0) {
     let points = gameState.currentCard.value * gameState.tour;
     gameState.aiScore[gameState.manche - 1] += points;
+    gameState.currentPoints = points;
     updateUI();
     showPopup(points, 'ai');
     setStatus(`VOUS ne pouvez pas répondre — I.A. gagne la manche ! (${gameState.currentCard.value} × ${gameState.tour} = ${points} pts)`);
     gameState.gameActive = false;
     gameState.waitingForPlayer = false;
+    gameState.isEnding = true;
     setTimeout(() => showMancheResult('ai', points, gameState.currentCard), 2000);
+  } else if (gameState.playerHand.length === 0) {
+    endMancheNoWinner();
   }
 }
 
@@ -717,16 +1010,22 @@ function resolvePli(secondPlayer, secondCard) {
   else if (secondCard.value > firstCard.value) winner = secondPlayer;
   else winner = firstPlayer;
   
-  setStatus(`Échange ${gameState.tour} : ${firstCard.value} vs ${secondCard.value} → ${winner === 'player' ? 'VOUS' : 'I.A.'} remporte l'échange et entame le suivant`);
+  setStatus(`Échange ${getCurrentTurn()} : ${firstCard.value} vs ${secondCard.value} → ${winner === 'player' ? 'VOUS' : 'I.A.'} remporte l'échange et entame le suivant`);
   
   gameState.currentCard = null;
   gameState.currentOwner = null;
+  gameState.currentPoints = 0;
   updateUI();
   
   setTimeout(() => {
+    if (gameState.isEnding) return;
+    
     if (gameState.playerHand.length === 0 && gameState.aiHand.length === 0) {
       endMancheNoWinner();
-    } else if (gameState.gameActive) {
+      return;
+    }
+    
+    if (gameState.gameActive) {
       gameState.tour++;
       updateUI();
       if (winner === 'player') {
@@ -738,49 +1037,74 @@ function resolvePli(secondPlayer, secondCard) {
         }
       } else {
         setStatus("I.A. commence le prochain échange");
-        aiPlay();
+        if (gameState.aiHand.length === 0) {
+          endMancheNoWinner();
+        } else {
+          aiPlay();
+        }
       }
     }
   }, 1800);
 }
 
+function checkMancheEnd() {
+  if (gameState.playerHand.length === 0 && gameState.aiHand.length === 0) {
+    endMancheNoWinner();
+    return true;
+  }
+  return false;
+}
+
 function endMancheNoWinner() {
-  setStatus(`Fin de manche — 12 échanges sans vainqueur. Aucun point.`);
+  if (gameState.isEnding) return;
+  gameState.isEnding = true;
   gameState.gameActive = false;
+  gameState.waitingForPlayer = false;
+  gameState.currentPoints = 0;
+  setStatus(`Fin de manche — 12 échanges sans vainqueur. Aucun point.`);
   setTimeout(() => showMancheResult(null, 0, null), 2000);
 }
 
 function showMancheResult(winner, points, lastCard) {
   let overlay = document.getElementById('mancheOverlay');
   let title = document.getElementById('mancheTitle');
-  let revealDiv = document.getElementById('mancheReveal');
   let winnerDiv = document.getElementById('mancheWinner');
+  let scoreDiv = document.getElementById('mancheScore');
   let detailsDiv = document.getElementById('mancheDetails');
+  let revealDiv = document.getElementById('mancheReveal');
   
-  title.innerText = `🏆 FIN DE MANCHE ${gameState.manche}`;
+  title.innerText = `FIN DE MANCHE ${gameState.manche}`;
   
-  // Révéler la carte écartée
+  revealDiv.innerHTML = '';
   if (gameState.discardedCard) {
     let cardImg = makeCard(gameState.discardedCard, true);
-    cardImg.style.width = '50px';
-    cardImg.style.height = '75px';
+    cardImg.style.width = '60px';
+    cardImg.style.height = '90px';
     cardImg.style.display = 'inline-block';
     cardImg.style.margin = '5px';
-    revealDiv.innerHTML = `Carte écartée : `;
+    let label = document.createElement('div');
+    label.style.fontSize = '0.7rem';
+    label.style.color = 'var(--dim)';
+    label.innerText = 'Carte écartée';
+    revealDiv.appendChild(label);
     revealDiv.appendChild(cardImg);
   } else {
-    revealDiv.innerHTML = `(Aucune carte écartée)`;
+    revealDiv.innerHTML = `<span style="color:var(--dim);font-size:0.7rem;">(Aucune carte écartée)</span>`;
   }
   
   if (winner === null) {
-    winnerDiv.innerHTML = `🤝 AUCUN VAINQUEUR - 12 échanges sans vainqueur`;
-    detailsDiv.innerHTML = `Aucun point marqué pour cette manche.`;
+    winnerDiv.innerText = 'MATCH NUL';
+    winnerDiv.style.color = 'var(--gold)';
+    scoreDiv.innerText = '—';
+    detailsDiv.innerText = '12 échanges sans vainqueur — Aucun point marqué.';
   } else {
     let winnerName = winner === 'player' ? 'VOUS' : 'I.A.';
     let winnerColor = winner === 'player' ? 'var(--cyan)' : 'var(--magenta)';
-    let cardInfo = lastCard ? `${lastCard.sym} ${lastCard.colorName} (valeur ${lastCard.value})` : '';
-    winnerDiv.innerHTML = `<strong style="color:${winnerColor}">${winnerName}</strong> remporte la manche !`;
-    detailsDiv.innerHTML = `🔢 Calcul : ${lastCard ? lastCard.value : '?'} (valeur) × ${gameState.tour} (rang) = ${points} pts<br>🏅 Score manche ${gameState.manche} → ${winnerName} : ${points} pts`;
+    winnerDiv.innerText = `${winnerName} remporte la manche !`;
+    winnerDiv.style.color = winnerColor;
+    scoreDiv.innerText = `+${points}`;
+    scoreDiv.style.color = winnerColor;
+    detailsDiv.innerText = `${lastCard ? lastCard.value : '?'} (valeur) × ${gameState.tour} (rang) = ${points} points`;
   }
   
   overlay.classList.add('on');
@@ -788,15 +1112,12 @@ function showMancheResult(winner, points, lastCard) {
 
 function closeManchePopup() {
   document.getElementById('mancheOverlay').classList.remove('on');
+  gameState.isEnding = false;
   if (gameState.manche === 1) {
     startManche2();
   } else {
     endGame();
   }
-}
-
-function endManche() {
-  // Remplacé par showMancheResult -> ne fait rien ici
 }
 
 function startManche2() {
@@ -809,8 +1130,10 @@ function startManche2() {
   gameState.waitingForPlayer = false;
   gameState.selectedCard = null;
   gameState.gameActive = true;
+  gameState.isEnding = false;
+  gameState.currentPoints = 0;
   
-  // Échange des jeux
+  // Échanger les jeux
   if (gameState.firstPlayer === 'player') {
     gameState.playerHand = [...gameState.originalAiHand];
     gameState.aiHand = [...gameState.originalPlayerHand];
@@ -819,20 +1142,25 @@ function startManche2() {
     gameState.aiHand = [...gameState.originalPlayerHand];
   }
   
+  // Déterminer qui a 13 cartes en manche 2 (l'inverse de la manche 1)
   let playerHas13 = (gameState.firstPlayer === 'ai');
+  
   if (playerHas13) {
-    let minIdx = 0;
-    for (let i = 1; i < gameState.playerHand.length; i++) {
-      if (gameState.playerHand[i].value < gameState.playerHand[minIdx].value) minIdx = i;
-    }
-    gameState.playerHand.splice(minIdx, 1);
-    setStatus("Manche 2 — VOUS avez 13 cartes, vous allez écarter une carte");
+    // Le joueur a 13 cartes → il doit écarter une carte
+    // Afficher la fenêtre d'écart pour que le joueur choisisse
+    gameState.discardedBy = null; // Réinitialiser
+    gameState.discardedCard = null;
+    updateUI();
+    setStatus("Manche 2 — VOUS avez 13 cartes, choisissez une carte à écarter");
     showDiscardForManche2();
   } else {
+    // L'IA a 13 cartes → elle écarte automatiquement la plus faible
     let minIdx = 0;
     for (let i = 1; i < gameState.aiHand.length; i++) {
       if (gameState.aiHand[i].value < gameState.aiHand[minIdx].value) minIdx = i;
     }
+    gameState.discardedCard = gameState.aiHand[minIdx];
+    gameState.discardedBy = 'ai';
     gameState.aiHand.splice(minIdx, 1);
     updateUI();
     setStatus("Manche 2 — I.A. commence");
@@ -851,6 +1179,7 @@ function showDiscardForManche2() {
     cardEl.onclick = (function(c) {
       return function() {
         gameState.discardedCard = c;
+        gameState.discardedBy = 'player';
         gameState.playerHand = gameState.playerHand.filter(x => x.id !== c.id);
         overlay.classList.remove('on');
         updateUI();
@@ -900,6 +1229,7 @@ function showDiscard() {
     cardEl.onclick = (function(c) {
       return function() {
         gameState.discardedCard = c;
+        gameState.discardedBy = 'player';
         gameState.playerHand = gameState.playerHand.filter(x => x.id !== c.id);
         overlay.classList.remove('on');
         updateUI();
@@ -931,6 +1261,18 @@ function showPopup(points, who) {
   setTimeout(() => div.remove(), 900);
 }
 
+function showDiscardCardPopup() {
+  if (!gameState.discardedCard || gameState.discardedBy !== 'player') return;
+  let container = document.getElementById('discardCardDisplay');
+  container.innerHTML = '';
+  let cardEl = makeCard(gameState.discardedCard, true);
+  cardEl.style.width = '100px';
+  cardEl.style.height = '150px';
+  cardEl.style.margin = '0 auto';
+  container.appendChild(cardEl);
+  document.getElementById('discardCardOverlay').classList.add('on');
+}
+
 function initGame() {
   let deck = createDeck();
   let firstIsPlayer = Math.random() < 0.5;
@@ -958,7 +1300,10 @@ function initGame() {
   gameState.selectedCard = null;
   gameState.gameActive = true;
   gameState.discardedCard = null;
+  gameState.discardedBy = null;
   gameState.timeoutId = null;
+  gameState.isEnding = false;
+  gameState.currentPoints = 0;
   
   updateUI();
   renderPlayerHand();
@@ -971,6 +1316,7 @@ function initGame() {
       if (gameState.aiHand[i].value < gameState.aiHand[minIdx].value) minIdx = i;
     }
     gameState.discardedCard = gameState.aiHand[minIdx];
+    gameState.discardedBy = 'ai';
     gameState.aiHand.splice(minIdx, 1);
     updateUI();
     setStatus("Manche 1 — I.A. commence");
@@ -978,10 +1324,29 @@ function initGame() {
   }
 }
 
+// ===== NAVIGATION =====
+function showGame() {
+  document.getElementById('home').style.display = 'none';
+  document.getElementById('game').style.display = 'block';
+  initGame();
+}
+
+function showHome() {
+  document.getElementById('home').style.display = 'flex';
+  document.getElementById('game').style.display = 'none';
+  document.querySelectorAll('.overlay').forEach(o => o.classList.remove('on'));
+}
+
+// ===== ÉVÉNEMENTS =====
+document.getElementById('startGameBtn').onclick = showGame;
+document.getElementById('replayBtn').onclick = showHome;
+document.getElementById('newGameBtn').onclick = showHome;
 document.getElementById('playBtn').onclick = confirmPlay;
 document.getElementById('rulesBtn').onclick = () => document.getElementById('rulesOverlay').classList.add('on');
+document.getElementById('rulesHomeBtn').onclick = () => document.getElementById('rulesOverlay').classList.add('on');
+document.getElementById('aboutHomeBtn').onclick = () => document.getElementById('aboutOverlay').classList.add('on');
+document.getElementById('discardBtn').onclick = showDiscardCardPopup;
 document.getElementById('mancheContinueBtn').onclick = () => closeManchePopup();
-initGame();
 </script>
 </body>
 </html>
