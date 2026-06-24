@@ -308,6 +308,14 @@ header { text-align: center; margin-bottom: 15px; }
   background: rgba(255,215,0,0.15);
   box-shadow: 0 0 8px rgba(255,215,0,0.2);
 }
+.btn-danger {
+  color: var(--magenta);
+  border-color: var(--magenta);
+}
+.btn-danger:hover {
+  background: rgba(255,107,157,0.15);
+  box-shadow: 0 0 8px rgba(255,107,157,0.2);
+}
 button:disabled {
   opacity: 0.4;
   cursor: not-allowed;
@@ -532,6 +540,108 @@ button:disabled {
   color: var(--dim);
   margin-top: 15px;
 }
+
+/* ===== FENÊTRE CHOIX DIFFICULTÉ ===== */
+.difficulty-container {
+  max-width: 500px;
+  padding: 30px;
+  background: rgba(26,26,46,0.95);
+  border: 1px solid var(--gold);
+  border-radius: 12px;
+  margin: 20px;
+  text-align: center;
+}
+.difficulty-container h2 {
+  color: var(--gold);
+  text-align: center;
+  margin-bottom: 25px;
+  letter-spacing: 0.1em;
+}
+.difficulty-container .difficulty-options {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+.difficulty-container .difficulty-options .diff-btn {
+  padding: 14px 20px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  letter-spacing: 0.2em;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.3s;
+  width: 100%;
+  text-align: center;
+  background: transparent;
+  border: 2px solid;
+}
+.difficulty-container .difficulty-options .diff-btn.normal {
+  color: var(--green);
+  border-color: var(--green);
+}
+.difficulty-container .difficulty-options .diff-btn.normal:hover {
+  background: rgba(0,230,118,0.15);
+  box-shadow: 0 0 20px rgba(0,230,118,0.2);
+  transform: scale(1.02);
+}
+.difficulty-container .difficulty-options .diff-btn.normal.selected {
+  background: rgba(0,230,118,0.15);
+  box-shadow: 0 0 25px rgba(0,230,118,0.2);
+}
+.difficulty-container .difficulty-options .diff-btn.hard {
+  color: var(--magenta);
+  border-color: var(--magenta);
+}
+.difficulty-container .difficulty-options .diff-btn.hard:hover {
+  background: rgba(255,107,157,0.15);
+  box-shadow: 0 0 20px rgba(255,107,157,0.2);
+  transform: scale(1.02);
+}
+.difficulty-container .difficulty-options .diff-btn.hard.selected {
+  background: rgba(255,107,157,0.15);
+  box-shadow: 0 0 25px rgba(255,107,157,0.2);
+}
+.difficulty-container .btn-group-diff {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+.difficulty-container .btn-group-diff .btn {
+  min-width: 120px;
+  padding: 10px 25px;
+}
+
+/* ===== FENÊTRE CONFIRMATION RETOUR ACCUEIL ===== */
+.confirm-container {
+  max-width: 450px;
+  padding: 30px;
+  background: rgba(26,26,46,0.95);
+  border: 1px solid var(--gold);
+  border-radius: 12px;
+  margin: 20px;
+  text-align: center;
+}
+.confirm-container h2 {
+  color: var(--gold);
+  text-align: center;
+  margin-bottom: 10px;
+  letter-spacing: 0.1em;
+}
+.confirm-container p {
+  font-size: 0.8rem;
+  color: var(--dim);
+  margin-bottom: 25px;
+}
+.confirm-container .btn-group-confirm {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+.confirm-container .btn-group-confirm .btn {
+  min-width: 120px;
+  padding: 10px 25px;
+}
 </style>
 </head>
 <body>
@@ -545,7 +655,7 @@ button:disabled {
     <div class="slogan">✦ 3 minutes, 2 joueurs, 1 gagnant ✦</div>
     <div class="btn-group">
       <button class="btn-home btn-rules-home" id="rulesHomeBtn">Règles du jeu</button>
-      <button class="btn-home btn-start" id="startGameBtn">Nouvelle partie</button>
+      <button class="btn-home btn-start" id="startGameBtn">▶ Nouvelle partie</button>
       <button class="btn-home btn-about" id="aboutHomeBtn">À propos</button>
     </div>
     <div class="decor">
@@ -602,9 +712,9 @@ button:disabled {
     </div>
 
     <div class="bottom-bar">
-      <button class="btn btn-primary" id="playBtn">JOUER</button>
+      <button class="btn btn-primary" id="playBtn">▶ JOUER</button>
       <button class="btn btn-discard" id="discardBtn" disabled>Carte écartée</button>
-      <button class="btn btn-secondary" id="newGameBtn">FIN DE PARTIE</button>
+      <button class="btn btn-secondary" id="homeBtn">ACCUEIL</button>
       <button class="btn btn-rules" id="rulesBtn">RÈGLES</button>
     </div>
 
@@ -614,7 +724,7 @@ button:disabled {
       <span style="color:#2ecc71">■ VERT</span>
       <span style="color:#f1c40f">▲ JAUNE</span>
       <span style="color:#9b59b6">✖ VIOLET</span>
-      <span style="color:var(--dim)">- Répondre = même symbole OU même couleur</span>
+      <span style="color:var(--dim)">→ Répondre = même symbole OU même couleur</span>
     </div>
     <div class="legend-credit" style="text-align:center;">- Murphy Ramusovic</div>
   </div>
@@ -627,7 +737,7 @@ button:disabled {
 </div>
 
 <!-- POPUP FIN DE MANCHE -->
-<div id="mancheOverlay" class="overlay"
+<div id="mancheOverlay" class="overlay">
   <div class="rules-container">
     <div class="manche-result">
       <div class="manche-title" id="mancheTitle">FIN DE MANCHE 1</div>
@@ -673,12 +783,45 @@ button:disabled {
   <div class="about-container">
     <h2>À PROPOS</h2>
     <h3>Historique</h3>
-    <p>Via Victae est à l'orignine un jeu de 25 cartes au format Tarot. Les cartes  s'harmonisent entre elles pour créer une infinité d'images. Chaque carte est une œuvre d'art spécialement interprétée par Dominique Ehrhard, peintre d'art et concepteur de jeux.</p>
-    <p>VIA VITAE est publié en 2004 par les édition Face & Dos et la ville d'Issy-les-Moulineaux.</p>
+    <p>25 cartes au format Tarot qui s'harmonisent entre elles pour créer une infinité d'images. Chaque carte est une œuvre d'art spécialement interprétée par Dominique Ehrhard, peintre d'art et concepteur de jeux.</p>
+    <p>VIA VITAE est publié par Edition Face & Dos et la ville d'Issy-les-Moulineaux avec le soutien d'Incredible Toys.</p>
     <p>C'est un jeu spécialement créé pour une exposition sur Dominique Ehrhard et ses œuvres d'art intitulée "L'exposition où vous jouez, peintures et jeux de Dominique Ehrhard", du 8 décembre 2004 au 13 février 2005 au Musée français des cartes à jouer (ville d'Issy-les-Moulineaux).</p>
-    <p>Les illustrations sont dans le style "Renaissance Italienne", de véritables représentations picturales de l'arbre de vie ou chemin du destin.</p>
-    <div class="about-credit">Nouveau design et code par Murphy Ramusovic 2026</div>
+    <p>Les illustrations sont adaptées d'un jeu du début du XXème siècle. Plus que de simples rectangles de cartons, vous posséderez entre vos mains de véritables représentations picturales de symboles zen, de l'arbre de vie au chemin du destin.</p>
+    <h3>Programme</h3>
+    <p>Conçu entièrement sur un iPad Pro avec les applications :.</p>
+    <p>- Deepseek : IA pour le codage en Javascript.</p>
+    <p>- JSAnywhere : éditeur iOS de javascript.</p>
+    <p>- Github : Hébergement du site réalisé en HTML/Javascript.</p>
+
+    <div class="about-credit">Nouveau design et code par Murphy Ramusovic</div>
     <button class="btn btn-primary" onclick="document.getElementById('aboutOverlay').classList.remove('on')" style="margin-top:15px;display:block;margin-left:auto;margin-right:auto;">FERMER</button>
+  </div>
+</div>
+
+<!-- POPUP CHOIX DIFFICULTÉ -->
+<div id="difficultyOverlay" class="overlay">
+  <div class="difficulty-container">
+    <h2>NOUVELLE PARTIE</h2>
+    <div class="difficulty-options">
+      <button class="diff-btn normal selected" id="diffNormalBtn">NORMAL</button>
+      <button class="diff-btn hard" id="diffHardBtn">DIFFICILE</button>
+    </div>
+    <div class="btn-group-diff">
+      <button class="btn btn-secondary" id="diffCancelBtn">ANNULER</button>
+      <button class="btn btn-primary" id="diffPlayBtn">JOUER</button>
+    </div>
+  </div>
+</div>
+
+<!-- POPUP CONFIRMATION RETOUR ACCUEIL -->
+<div id="confirmOverlay" class="overlay">
+  <div class="confirm-container">
+    <h2>RETOUR À L'ACCUEIL</h2>
+    <p>Voulez-vous vraiment quitter la partie en cours ?</p>
+    <div class="btn-group-confirm">
+      <button class="btn btn-danger" id="confirmEndBtn">TERMINÉ</button>
+      <button class="btn btn-primary" id="confirmContinueBtn">CONTINUER</button>
+    </div>
   </div>
 </div>
 
@@ -739,10 +882,10 @@ let gameState = {
   timeoutId: null,
   isEnding: false,
   currentPoints: 0,
-  turnNumber: 0
+  turnNumber: 0,
+  difficulty: 'normal'
 };
 
-// Fonction pour calculer le numéro de colonne en cours
 function getCurrentTurn() {
   if (gameState.tour === 0) return 1;
   return Math.floor((gameState.tour - 1) / 2) + 1;
@@ -943,16 +1086,26 @@ function aiPlay() {
     
     let chosenCard;
     if (!gameState.currentCard) {
-      let sorted = [...gameState.aiHand].sort((a,b) => b.value - a.value);
-      chosenCard = sorted[0];
-    } else {
-      let canWin = playableCards.filter(c => c.value > gameState.currentCard.value);
-      if (canWin.length > 0) {
-        canWin.sort((a,b) => a.value - b.value);
-        chosenCard = canWin[0];
+      if (gameState.difficulty === 'hard') {
+        let sorted = [...gameState.aiHand].sort((a,b) => a.value - b.value);
+        chosenCard = sorted[0];
       } else {
+        let sorted = [...gameState.aiHand].sort((a,b) => b.value - a.value);
+        chosenCard = sorted[0];
+      }
+    } else {
+      if (gameState.difficulty === 'hard') {
         playableCards.sort((a,b) => a.value - b.value);
         chosenCard = playableCards[0];
+      } else {
+        let canWin = playableCards.filter(c => c.value > gameState.currentCard.value);
+        if (canWin.length > 0) {
+          canWin.sort((a,b) => a.value - b.value);
+          chosenCard = canWin[0];
+        } else {
+          playableCards.sort((a,b) => a.value - b.value);
+          chosenCard = playableCards[0];
+        }
       }
     }
     
@@ -1133,7 +1286,6 @@ function startManche2() {
   gameState.isEnding = false;
   gameState.currentPoints = 0;
   
-  // Échanger les jeux
   if (gameState.firstPlayer === 'player') {
     gameState.playerHand = [...gameState.originalAiHand];
     gameState.aiHand = [...gameState.originalPlayerHand];
@@ -1142,19 +1294,15 @@ function startManche2() {
     gameState.aiHand = [...gameState.originalPlayerHand];
   }
   
-  // Déterminer qui a 13 cartes en manche 2 (l'inverse de la manche 1)
   let playerHas13 = (gameState.firstPlayer === 'ai');
   
   if (playerHas13) {
-    // Le joueur a 13 cartes → il doit écarter une carte
-    // Afficher la fenêtre d'écart pour que le joueur choisisse
-    gameState.discardedBy = null; // Réinitialiser
+    gameState.discardedBy = null;
     gameState.discardedCard = null;
     updateUI();
     setStatus("Manche 2 — VOUS avez 13 cartes, choisissez une carte à écarter");
     showDiscardForManche2();
   } else {
-    // L'IA a 13 cartes → elle écarte automatiquement la plus faible
     let minIdx = 0;
     for (let i = 1; i < gameState.aiHand.length; i++) {
       if (gameState.aiHand[i].value < gameState.aiHand[minIdx].value) minIdx = i;
@@ -1205,13 +1353,13 @@ function endGame() {
   
   let title = document.getElementById('endTitle');
   if (totalPlayer > totalAi) {
-    title.innerText = 'VICTOIRE';
+    title.innerText = '🏆 VICTOIRE';
     title.style.color = 'var(--cyan)';
   } else if (totalAi > totalPlayer) {
-    title.innerText = 'DÉFAITE';
+    title.innerText = '💔 DÉFAITE';
     title.style.color = 'var(--magenta)';
   } else {
-    title.innerText = 'ÉGALITÉ';
+    title.innerText = '🤝 ÉGALITÉ';
     title.style.color = 'var(--gold)';
   }
   
@@ -1273,7 +1421,9 @@ function showDiscardCardPopup() {
   document.getElementById('discardCardOverlay').classList.add('on');
 }
 
-function initGame() {
+function initGame(difficulty) {
+  gameState.difficulty = difficulty || 'normal';
+  
   let deck = createDeck();
   let firstIsPlayer = Math.random() < 0.5;
   
@@ -1328,7 +1478,6 @@ function initGame() {
 function showGame() {
   document.getElementById('home').style.display = 'none';
   document.getElementById('game').style.display = 'block';
-  initGame();
 }
 
 function showHome() {
@@ -1337,10 +1486,66 @@ function showHome() {
   document.querySelectorAll('.overlay').forEach(o => o.classList.remove('on'));
 }
 
+// ===== GESTION DIFFICULTÉ =====
+let selectedDifficulty = 'normal';
+
+function showDifficultyPopup() {
+  document.getElementById('difficultyOverlay').classList.add('on');
+}
+
+function hideDifficultyPopup() {
+  document.getElementById('difficultyOverlay').classList.remove('on');
+}
+
+// Gestion des boutons de difficulté
+document.getElementById('diffNormalBtn').onclick = function() {
+  document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('selected'));
+  this.classList.add('selected');
+  selectedDifficulty = 'normal';
+};
+
+document.getElementById('diffHardBtn').onclick = function() {
+  document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('selected'));
+  this.classList.add('selected');
+  selectedDifficulty = 'hard';
+};
+
+// Bouton ANNULER
+document.getElementById('diffCancelBtn').onclick = function() {
+  hideDifficultyPopup();
+};
+
+// Bouton JOUER
+document.getElementById('diffPlayBtn').onclick = function() {
+  hideDifficultyPopup();
+  showGame();
+  initGame(selectedDifficulty);
+};
+
+// ===== GESTION CONFIRMATION RETOUR ACCUEIL =====
+function showConfirmPopup() {
+  document.getElementById('confirmOverlay').classList.add('on');
+}
+
+function hideConfirmPopup() {
+  document.getElementById('confirmOverlay').classList.remove('on');
+}
+
+document.getElementById('confirmEndBtn').onclick = function() {
+  hideConfirmPopup();
+  showHome();
+};
+
+document.getElementById('confirmContinueBtn').onclick = function() {
+  hideConfirmPopup();
+};
+
+// Bouton ACCUEIL dans le jeu
+document.getElementById('homeBtn').onclick = showConfirmPopup;
+
 // ===== ÉVÉNEMENTS =====
-document.getElementById('startGameBtn').onclick = showGame;
+document.getElementById('startGameBtn').onclick = showDifficultyPopup;
 document.getElementById('replayBtn').onclick = showHome;
-document.getElementById('newGameBtn').onclick = showHome;
 document.getElementById('playBtn').onclick = confirmPlay;
 document.getElementById('rulesBtn').onclick = () => document.getElementById('rulesOverlay').classList.add('on');
 document.getElementById('rulesHomeBtn').onclick = () => document.getElementById('rulesOverlay').classList.add('on');
