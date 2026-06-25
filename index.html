@@ -117,6 +117,15 @@ body {
   box-shadow: 0 0 20px rgba(255,215,0,0.2);
   transform: scale(1.05);
 }
+#home .btn-home.btn-scores {
+  color: var(--purple);
+  border-color: var(--purple);
+}
+#home .btn-home.btn-scores:hover {
+  background: rgba(179,136,255,0.15);
+  box-shadow: 0 0 20px rgba(179,136,255,0.2);
+  transform: scale(1.05);
+}
 #home .decor {
   margin-top: 40px;
   font-size: 2.2rem;
@@ -315,6 +324,14 @@ header { text-align: center; margin-bottom: 15px; }
 .btn-danger:hover {
   background: rgba(255,107,157,0.15);
   box-shadow: 0 0 8px rgba(255,107,157,0.2);
+}
+.btn-scores {
+  color: var(--purple);
+  border-color: var(--purple);
+}
+.btn-scores:hover {
+  background: rgba(179,136,255,0.15);
+  box-shadow: 0 0 8px rgba(179,136,255,0.2);
 }
 button:disabled {
   opacity: 0.4;
@@ -642,6 +659,81 @@ button:disabled {
   min-width: 120px;
   padding: 10px 25px;
 }
+
+/* ===== PAGE DES SCORES ===== */
+#scores {
+  display: none;
+  min-height: 90vh;
+  padding: 20px;
+  flex-direction: column;
+  align-items: center;
+}
+#scores .scores-title {
+  font-size: 2rem;
+  color: var(--gold);
+  letter-spacing: 0.2em;
+  margin-bottom: 10px;
+  text-shadow: 0 0 20px rgba(255,215,0,0.2);
+}
+#scores .scores-subtitle {
+  font-size: 0.7rem;
+  color: var(--dim);
+  margin-bottom: 25px;
+  letter-spacing: 0.1em;
+}
+#scores .scores-table-wrapper {
+  width: 100%;
+  max-width: 800px;
+  overflow-x: auto;
+  background: rgba(0,0,0,0.3);
+  border-radius: 10px;
+  padding: 15px;
+  border: 1px solid rgba(255,215,0,0.15);
+}
+#scores table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.7rem;
+}
+#scores table th {
+  color: var(--gold);
+  letter-spacing: 0.15em;
+  padding: 10px 8px;
+  text-align: left;
+  border-bottom: 1px solid rgba(255,215,0,0.2);
+  font-weight: normal;
+}
+#scores table td {
+  padding: 8px 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  color: var(--text);
+}
+#scores table tr:hover td {
+  background: rgba(255,255,255,0.03);
+}
+#scores table .winner-player {
+  color: var(--cyan);
+  font-weight: bold;
+}
+#scores table .winner-ai {
+  color: var(--magenta);
+  font-weight: bold;
+}
+#scores table .diff-normal {
+  color: var(--green);
+}
+#scores table .diff-hard {
+  color: var(--magenta);
+}
+#scores .no-scores {
+  color: var(--dim);
+  font-size: 0.8rem;
+  padding: 40px 0;
+  text-align: center;
+}
+#scores .scores-footer {
+  margin-top: 25px;
+}
 </style>
 </head>
 <body>
@@ -655,7 +747,8 @@ button:disabled {
     <div class="slogan">✦ 3 minutes, 2 joueurs, 1 gagnant ✦</div>
     <div class="btn-group">
       <button class="btn-home btn-rules-home" id="rulesHomeBtn">Règles du jeu</button>
-      <button class="btn-home btn-start" id="startGameBtn">▶ Nouvelle partie</button>
+      <button class="btn-home btn-start" id="startGameBtn">Nouvelle partie</button>
+      <button class="btn-home btn-scores" id="scoresHomeBtn">Scores</button>
       <button class="btn-home btn-about" id="aboutHomeBtn">À propos</button>
     </div>
     <div class="decor">
@@ -726,7 +819,31 @@ button:disabled {
       <span style="color:#9b59b6">✖ VIOLET</span>
       <span style="color:var(--dim)">→ Répondre = même symbole OU même couleur</span>
     </div>
-    <div class="legend-credit" style="text-align:center;">- Murphy Ramusovic</div>
+    <div class="legend-credit" style="text-align:center;">de Murphy Ramusovic</div>
+  </div>
+</div>
+
+<!-- ===== PAGE DES SCORES ===== -->
+<div id="scores">
+  <div class="scores-title">🏆 HISTORIQUE DES SCORES</div>
+  <div class="scores-subtitle">Les 20 dernières parties</div>
+  <div class="scores-table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Niveau</th>
+          <th>IA</th>
+          <th>Vous</th>
+          <th>Vainqueur</th>
+        </tr>
+      </thead>
+      <tbody id="scoresBody">
+      </tbody>
+    </table>
+  </div>
+  <div class="scores-footer">
+    <button class="btn btn-primary" id="scoresBackHomeBtn">ACCUEIL</button>
   </div>
 </div>
 
@@ -788,7 +905,7 @@ button:disabled {
     <p>C'est un jeu spécialement créé pour une exposition sur Dominique Ehrhard et ses œuvres d'art intitulée "L'exposition où vous jouez, peintures et jeux de Dominique Ehrhard", du 8 décembre 2004 au 13 février 2005 au Musée français des cartes à jouer (ville d'Issy-les-Moulineaux).</p>
     <p>Les illustrations sont adaptées d'un jeu du début du XXème siècle. Plus que de simples rectangles de cartons, vous posséderez entre vos mains de véritables représentations picturales de symboles zen, de l'arbre de vie au chemin du destin.</p>
     <h3>Programme</h3>
-    <p>Conçu entièrement sur un iPad Pro avec les applications :.</p>
+    <p>Conçu entièrement sur un iPad Pro avec les applications :</p>
     <p>- Deepseek : IA pour le codage en Javascript.</p>
     <p>- JSAnywhere : éditeur iOS de javascript.</p>
     <p>- Github : Hébergement du site réalisé en HTML/Javascript.</p>
@@ -836,6 +953,95 @@ button:disabled {
 </div>
 
 <script>
+// ===== GESTION DES SCORES =====
+const MAX_SCORES = 20;
+const STORAGE_KEY = 'via_vitae_scores';
+
+function getScores() {
+  try {
+    const data = localStorage.getItem(STORAGE_KEY);
+    return data ? JSON.parse(data) : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveScore(score) {
+  let scores = getScores();
+  scores.unshift(score);
+  if (scores.length > MAX_SCORES) {
+    scores = scores.slice(0, MAX_SCORES);
+  }
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(scores));
+}
+
+function formatDate(timestamp) {
+  const d = new Date(timestamp);
+  const pad = (n) => String(n).padStart(2, '0');
+  return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
+function renderScores() {
+  const scores = getScores();
+  const tbody = document.getElementById('scoresBody');
+  tbody.innerHTML = '';
+  
+  if (scores.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="5" class="no-scores">Aucune partie enregistrée</td></tr>`;
+    return;
+  }
+  
+  for (const s of scores) {
+    const tr = document.createElement('tr');
+    const winnerClass = s.winner === 'player' ? 'winner-player' : 'winner-ai';
+    const diffClass = s.difficulty === 'hard' ? 'diff-hard' : 'diff-normal';
+    const diffLabel = s.difficulty === 'hard' ? 'Diff.' : 'Norm.';
+    const winnerLabel = s.winner === 'player' ? 'VOUS' : 'I.A.';
+    
+    tr.innerHTML = `
+      <td>${formatDate(s.date)}</td>
+      <td class="${diffClass}">${diffLabel}</td>
+      <td>${s.aiScore}</td>
+      <td>${s.playerScore}</td>
+      <td class="${winnerClass}">${winnerLabel}</td>
+    `;
+    tbody.appendChild(tr);
+  }
+}
+
+function addScore(playerScore, aiScore, difficulty, winner) {
+  saveScore({
+    date: Date.now(),
+    playerScore: playerScore,
+    aiScore: aiScore,
+    difficulty: difficulty,
+    winner: winner
+  });
+}
+
+// ===== NAVIGATION PAGES =====
+function showPage(page) {
+  document.getElementById('home').style.display = 'none';
+  document.getElementById('game').style.display = 'none';
+  document.getElementById('scores').style.display = 'none';
+  document.getElementById(page).style.display = page === 'home' ? 'flex' : 'block';
+}
+
+function showHome() {
+  showPage('home');
+  document.querySelectorAll('.overlay').forEach(o => o.classList.remove('on'));
+}
+
+function showGame() {
+  showPage('game');
+}
+
+function showScores() {
+  renderScores();
+  showPage('scores');
+}
+
+// ===== SUITE DU CODE JEU =====
 const SYMBOLS = [
   { char: '★', name: 'ETOILE', order: 0 },
   { char: '●', name: 'ROND', order: 1 },
@@ -1352,15 +1558,23 @@ function endGame() {
   document.getElementById('endDetail').innerHTML = `Manche 1: VOUS ${gameState.playerScore[0]} - ${gameState.aiScore[0]} I.A.<br>Manche 2: VOUS ${gameState.playerScore[1]} - ${gameState.aiScore[1]} I.A.`;
   
   let title = document.getElementById('endTitle');
+  let winner;
   if (totalPlayer > totalAi) {
     title.innerText = '🏆 VICTOIRE';
     title.style.color = 'var(--cyan)';
+    winner = 'player';
   } else if (totalAi > totalPlayer) {
     title.innerText = '💔 DÉFAITE';
     title.style.color = 'var(--magenta)';
+    winner = 'ai';
   } else {
     title.innerText = '🤝 ÉGALITÉ';
     title.style.color = 'var(--gold)';
+    winner = 'draw';
+  }
+  
+  if (winner !== 'draw') {
+    addScore(totalPlayer, totalAi, gameState.difficulty, winner);
   }
   
   document.getElementById('endOverlay').classList.add('on');
@@ -1474,18 +1688,6 @@ function initGame(difficulty) {
   }
 }
 
-// ===== NAVIGATION =====
-function showGame() {
-  document.getElementById('home').style.display = 'none';
-  document.getElementById('game').style.display = 'block';
-}
-
-function showHome() {
-  document.getElementById('home').style.display = 'flex';
-  document.getElementById('game').style.display = 'none';
-  document.querySelectorAll('.overlay').forEach(o => o.classList.remove('on'));
-}
-
 // ===== GESTION DIFFICULTÉ =====
 let selectedDifficulty = 'normal';
 
@@ -1497,7 +1699,6 @@ function hideDifficultyPopup() {
   document.getElementById('difficultyOverlay').classList.remove('on');
 }
 
-// Gestion des boutons de difficulté
 document.getElementById('diffNormalBtn').onclick = function() {
   document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('selected'));
   this.classList.add('selected');
@@ -1510,12 +1711,10 @@ document.getElementById('diffHardBtn').onclick = function() {
   selectedDifficulty = 'hard';
 };
 
-// Bouton ANNULER
 document.getElementById('diffCancelBtn').onclick = function() {
   hideDifficultyPopup();
 };
 
-// Bouton JOUER
 document.getElementById('diffPlayBtn').onclick = function() {
   hideDifficultyPopup();
   showGame();
@@ -1540,9 +1739,6 @@ document.getElementById('confirmContinueBtn').onclick = function() {
   hideConfirmPopup();
 };
 
-// Bouton ACCUEIL dans le jeu
-document.getElementById('homeBtn').onclick = showConfirmPopup;
-
 // ===== ÉVÉNEMENTS =====
 document.getElementById('startGameBtn').onclick = showDifficultyPopup;
 document.getElementById('replayBtn').onclick = showHome;
@@ -1552,6 +1748,9 @@ document.getElementById('rulesHomeBtn').onclick = () => document.getElementById(
 document.getElementById('aboutHomeBtn').onclick = () => document.getElementById('aboutOverlay').classList.add('on');
 document.getElementById('discardBtn').onclick = showDiscardCardPopup;
 document.getElementById('mancheContinueBtn').onclick = () => closeManchePopup();
+document.getElementById('homeBtn').onclick = showConfirmPopup;
+document.getElementById('scoresHomeBtn').onclick = showScores;
+document.getElementById('scoresBackHomeBtn').onclick = showHome;
 </script>
 </body>
 </html>
